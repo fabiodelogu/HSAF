@@ -1,0 +1,148 @@
+# Run and Date now
+sTimeNow = ''			# Running date	(yyyymmddHHMM)
+iDaysElaborationRange = 5			# Running date range (days)
+
+# Time definition(s)
+iTimeDelta = 86400					# Data time resolution [seconds]
+iTimeBuffer = 0					# Buffer time range [seconds]
+
+# Domain name
+sDomainName = 'Italy'
+
+# Reference file(s)
+sFileNameRef = 'DEM_Italy_latlon_0.0042.txt';
+
+# Filename output (root)
+sFileNameOUT = 'S-HSAF-product_yyyymmdd_HHMMSS.hdf5'
+
+# Reference Path(s)
+sPathDataStatic = "/home/gabellani/HSAF_Data_Processing/Data_Static/Database_GIS/Italy/Raster/"
+sPathDataDynamicSource = "/home/gabellani/HSAF_Data_Processing/Data_TimeDip/Source/";
+sPathDataDynamicOutcome = "/home/gabellani/HSAF_Data_Processing/Data_TimeDip/Outcome_Italy/";
+sPathTemp = "/home/gabellani/HSAF_Data_Processing/Temp/"
+
+# Flag to delete temporary file(s)
+iTempFileDelete = 1
+		
+# Data settings
+oDataSettings = {		
+				 'Features' : 	{
+				 				'ProductName' 	:	{'NameIN': 'h10' , 		'NameOUT' : 'h10' },
+				 				'ProductTime'	:	{'TimeFormatIN': 'yyyymmdd', 'TimeFormatOUT' : 'yyyymmdd_HHMMSS'}},
+ 				 'Fields' : 	{
+				 				'Longitude' 	: {
+						 						 	'NameIN'		: 'LON' , 	
+						 						 	'NameOUT' 		: 'GeoX' , 
+						 						 	'ScaleFactor'	: 100 ,
+						 						 	'NoData'		: 9000,
+	 				  								'Lim_Min'		: None,
+	 				  								'Lim_Max'		: None,
+						 						 	'Mask'			: {},
+		 			  								'Attrs'			: {	'standard_name':		'longitude',
+																		'long_name': 			'longitude', 
+																		'cell_method':			'',
+																		'coordinates': 			'lon lat',
+																		'units': 				'degree',
+																		'grid_mapping':			'crs',
+																		'model_description': 	'',
+																		'model_name': 			'',
+																		'time_interp':			'',
+																		'spatial_interp':		'',
+																		'integrate_layers':		'',
+																		'saving_method':		'writeVar2D',
+																	},
+					 						  	},
+				 			  	'Latitude' 		: {		
+				 			  						'NameIN'		: 'LAT'	,
+				 			  						'NameOUT' 		: 'GeoY' , 
+				 			  						'ScaleFactor'	: 100 ,
+				 			  						'NoData'		: 9000,
+	 				  								'Lim_Min'		: None,
+	 				  								'Lim_Max'		: None,
+				 			  						'Mask'			: {},
+		 			  								'Attrs'			: {	'standard_name':		'latitude',
+																		'long_name': 			'latitude', 
+																		'cell_method':			'',
+																		'coordinates': 			'lon lat',
+																		'units': 				'degree',
+																		'grid_mapping':			'crs',
+																		'model_description': 	'',
+																		'model_name': 			'',
+																		'time_interp':			'',
+																		'spatial_interp':		'',
+																		'integrate_layers':		'',
+																		'saving_method':		'writeVar2D',
+																	},
+				 			  						},
+				 			  	'SnowCoverVal'	: {	
+	 				  								'NameIN'		: 'SC' ,
+	 				  								'NameOUT' 		: 'a2iDataGridSnowMaskValue' , 
+	 				  								'ScaleFactor'	: 1 ,
+	 				  								'NoData'		: 255,
+	 				  								'Lim_Min'		: 0,
+	 				  								'Lim_Max'		: 3,
+	 				  								'Mask'			: {
+																		'Snow' 			: 	{'iValueRaw' : 0 , 		'iValueMap' : 0 },
+																	 	'Cloud' 		: 	{'iValueRaw' : 42 , 	'iValueMap' : 1 },
+																	 	'Soil' 			: 	{'iValueRaw' : 85 , 	'iValueMap' : 2 },
+																	 	'Sea' 			: 	{'iValueRaw' : 170 , 	'iValueMap' : 255 },
+																	 	'Dark' 			: 	{'iValueRaw' : 212 , 	'iValueMap' : 3 },
+																	 	'NoData' 		: 	{'iValueRaw' : 255 , 	'iValueMap' : 3 },
+																	},
+													'Attrs'			: {	'standard_name':		'Snow_Cover',
+																		'long_name': 			'Snow Detection (Snow Mask) Value', 
+																		'cell_method':			'',
+																		'coordinates': 			'lon lat',
+																		'units': 				'-',
+																		'grid_mapping':			'crs',
+																		'model_description': 	'Snow detection (snow mask) by VIS/IR radiometry',
+																		'model_name': 			'EUMETSAT H-SAF SN-OBS-1 (H10)',
+																		'time_interp':			'',
+																		'spatial_interp':		'nearest',
+																		'integrate_layers':		'',
+																		'saving_method':		'writeVar2D',
+																		'palette':				'Snow=0; Cloud=1; Soil=2; NoData=3',
+																		'nodata':				-9999,
+																	},
+													
+	 				  								},
+				 			  	'SnowCoverQ' 	: {	
+				 			  						'NameIN'		: 'SC_Q_Flags' ,
+				 			  						'NameOUT' 		: 'a2iDataGridSnowMaskQuality' ,
+				 			  						'ScaleFactor'	: 1 ,
+				 			  						'NoData'		: 0,
+	 				  								'Lim_Min'		: None,
+	 				  								'Lim_Max'		: None,
+				 			  						'Mask'			: {},
+		 			  								'Attrs'			: {	'standard_name':		'Snow_Cover_Quality',
+																		'long_name': 			'Snow Detection (Snow Mask) Quality Flags', 
+																		'cell_method':			'',
+																		'coordinates': 			'lon lat',
+																		'units': 				'-',
+																		'grid_mapping':			'crs',
+																		'model_description': 	'Snow detection (snow mask) by VIS/IR radiometry',
+																		'model_name': 			'EUMETSAT H-SAF SN-OBS-1 (H10)',
+																		'time_interp':			'',
+																		'spatial_interp':		'nearest',
+																		'integrate_layers':		'',
+																		'saving_method':		'writeVar2D',
+																		'palette':				{},
+																		'nodata':				-9999,
+																	},
+				 			  						
+				 			  						},
+				 				},
+				}
+
+				
+				
+
+				
+				
+				
+				
+				
+				
+				
+				
+
